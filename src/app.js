@@ -12,7 +12,7 @@ app.use("/", route);
 const url = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@cluster0.4nkid.mongodb.net/EVENTMANAGER`;
 
 mongoose
-  .connect(url, { useNewUrlParser: true })
+  .connect(url,{ useNewUrlParser: true })
   .then(() => console.log("database is connected..."))
   .catch((err) => console.error(err));
 
