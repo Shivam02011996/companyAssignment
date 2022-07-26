@@ -13,24 +13,21 @@ const eventSchema = new mongoose.Schema(
       trim: true,
     },
     eventDate: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },
-    invitees: {
-      type: [
-        {
-          invite: {
-            type: ObjectId,
-            ref: "User",
-          },
-          timings: {
-            type: String,
-          },
+    invitees: [
+      {
+        invitee: { type: ObjectId, ref: "User", required: true },
+        timings: {
+          type: String,
+          required: true,
         },
-      ],
-    },
+      },
+    ],
   },
+
   { timestamps: true }
 );
 

@@ -7,6 +7,7 @@ const cookie=require('cookie-parser');
 const route = require("./routes/route");
 const app = express();
 
+app.use(express.json())
 app.use(multer().any())
 app.use(cookie())
 
