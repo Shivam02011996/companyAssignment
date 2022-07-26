@@ -1,14 +1,20 @@
+const jwt = require("jsonwebtoken");
+
 const authorization = (req, res, next) => {
-  const token = req.cookies.access_token;
-  if (!token) {
-    return res.sendStatus(403);
-  }
   try {
+    const token = req.cookies.access_token;
+
+    if (!token) 
+      return res.status(400).json({ status: false, msg: "token is required" });
+
     const data = jwt.verify(token, `${process.env.SECRET_KEY}`);
-    req.userId = data.id;
+    
+    req.userId = data.userId;
+
     return next();
-  } catch {
-    return res.sendStatus(403);
+
+  } catch (err) {
+    return res.status(500).json({ status: false, msg: err.message });
   }
 };
 

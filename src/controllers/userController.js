@@ -1,12 +1,11 @@
 const jwt = require("jsonwebtoken");
-const cookie = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const EventModel = require("../models/eventModel");
 const UserModel = require("../models/userModel");
 const validator = require("../utils/validator");
 
+///
 const registerUser = async (req, res) => {
   try {
     if (!validator.isValidRequestBody(req.body))
@@ -125,10 +124,7 @@ const login = async (req, res) => {
       if (decryppasss) {
         const Token = jwt.sign(
           {
-            userId: User._id,
-            iat: Math.floor(Date.now() / 1000),
-            exp: Math.floor(Date.now() / 1000) + 30 * 60,
-            //exp date 30*60=30min
+            userId: User._id
           },
           `${process.env.SECRET_KEY}`
         );
@@ -150,6 +146,8 @@ const login = async (req, res) => {
   }
 };
 
+
+///
 const logout = (req, res) => {
   return res
     .clearCookie("access_token")
@@ -157,4 +155,65 @@ const logout = (req, res) => {
     .json({ message: "Successfully logged out" });
 };
 
-module.exports = { registerUser, login, logout };
+
+///
+const changePassword = async (req, res) => {
+  try {
+    if (!validator.isValidObjectId(req.params.userId))
+      return res
+        .status(400)
+        .json({ status: false, message: `${userId} is invalid` });
+
+    const userFound = await UserModel.findOne({ _id: req.params.userId });
+
+    if (!userFound)
+      return res
+        .status(404)
+        .json({ status: false, message: `User do not exists` });
+
+     if (req.params.userId.toString() !== req.userId)
+     return res.status(401).json({
+     status: false,
+     message: `UnAuthorized access to user`,
+    });
+
+    if (!validator.isValidRequestBody(req.body))
+      return res
+        .status(400)
+        .json({ status: false, message: "Please provide details to update" });
+
+    let { password } = req.body;
+
+    let updateUserData = {};
+
+    if (password.length < 8 || password.length > 15)
+    return res
+      .status(400)
+      .json({ status: false, msg: "password length be btw 8-15" });
+
+    if (validator.isValid(password)) {
+      const encryptPass = await bcrypt.hash(password, saltRounds);
+      updateUserData["password"] = encryptPass;
+    }
+
+    const updatedUserData = await UserModel.findOneAndUpdate(
+      { _id: req.params.userId },
+      updateUserData,
+      { new: true }
+    );
+
+    return res
+      .status(201)
+      .json({
+        status: true,
+        msg: "password changed successfully",
+        data: updatedUserData,
+      });
+  } catch (error) {
+    return res.status(500).json({ status: false, msg: error.message });
+  }
+};
+
+
+
+module.exports = { registerUser, login, logout, changePassword };

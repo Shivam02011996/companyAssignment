@@ -14,7 +14,6 @@ const isValidObjectId = (objectId) => {
   return mongoose.Types.ObjectId.isValid(objectId);
 };
 
-
 const isValidFname = (status) => {
   return ["Mr", "Miss", "Mrs"].indexOf(status) !== -1;
 };
