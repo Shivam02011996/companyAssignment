@@ -13,7 +13,7 @@ router.post("/changePassword/:userId",authorization,userController.changePasswor
 
 // Event`s Api`s
 router.post("/addEvent",evntController.addEvent);
-router.post("/inviteEvent",evntController.invite);
+router.post("/inviteEvent/:id",evntController.invite);
 router.get("/listEvent",evntController.events);
 router.post("/changeEvent/:userId",evntController.updateEvent);
 router.post("/eventsDetails",evntController.details);
