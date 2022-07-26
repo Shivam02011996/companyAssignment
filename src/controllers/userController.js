@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+const cookie = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -20,10 +22,20 @@ const registerUser = async (req, res) => {
         .status(400)
         .json({ status: false, msg: "first name is required" });
 
+    if (!validator.isValidFname(firstName))
+      return res
+        .status(400)
+        .json({ status: false, msg: "first name should be Mr or Mrs" });
+
     if (!validator.isValid(lastName))
       return res
         .status(400)
         .json({ status: false, msg: "last name is required" });
+
+    if (!/^[a-zA-Z]+$/.test(lastName))
+      return res
+        .status(400)
+        .json({ status: false, msg: "last name should be string" });
 
     if (!validator.isValid(email))
       return res.status(400).json({ status: false, msg: "email is required" });
@@ -67,7 +79,6 @@ const registerUser = async (req, res) => {
     return res.status(500).json({ status: false, msg: err.message });
   }
 };
-
 
 ///
 const login = async (req, res) => {
@@ -122,11 +133,15 @@ const login = async (req, res) => {
           `${process.env.SECRET_KEY}`
         );
 
-        return res.status(200).json({
-          status: true,
-          msg: "successfully loggedin",
-          data: { userId: User._id, token: Token },
-        });
+        return res
+          .cookie("access_token", Token, {
+            httpOnly: true,
+          })
+          .status(200)
+          .json({
+            message: "Logged in successfully",
+            data: { userId: User._id, token: Token },
+          });
       } else
         return res.status(400).json({ status: false, Msg: "Invalid password" });
     }
@@ -135,4 +150,11 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { registerUser , login};
+const logout = (req, res) => {
+  return res
+    .clearCookie("access_token")
+    .status(200)
+    .json({ message: "Successfully logged out" });
+};
+
+module.exports = { registerUser, login, logout };

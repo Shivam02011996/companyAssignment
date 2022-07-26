@@ -14,10 +14,6 @@ const isValidObjectId = (objectId) => {
   return mongoose.Types.ObjectId.isValid(objectId);
 };
 
-const validstring = (value) => {
-  if (typeof value === "string" && value.trim().length === 0) return false;
-  return true;
-};
 
 const isValidFname = (status) => {
   return ["Mr", "Miss", "Mrs"].indexOf(status) !== -1;
@@ -26,7 +22,6 @@ const isValidFname = (status) => {
 module.exports = {
   isValid,
   isValidFname,
-  validstring,
   isValidObjectId,
   isValidRequestBody,
 };

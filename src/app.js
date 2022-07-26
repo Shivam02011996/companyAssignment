@@ -1,11 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const multer=require('multer');
+const cookie=require('cookie-parser');
+
 const route = require("./routes/route");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(multer().any())
+app.use(cookie())
 
 app.use("/", route);
 
