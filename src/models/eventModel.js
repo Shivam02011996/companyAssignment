@@ -3,6 +3,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const eventSchema = new mongoose.Schema(
   {
+    creator:{
+      type:ObjectId
+    },
     title: {
       type: String,
       required: true,

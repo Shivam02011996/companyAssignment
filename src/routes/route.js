@@ -9,13 +9,13 @@ const {authorization}=require("../middleware/mid");
 router.post("/registerUser",userController.registerUser);
 router.post("/login",userController.login);
 router.get("/logout",authorization,userController.logout);
-router.post("/changePassword/:userId",authorization,userController.changePassword);
+router.patch("/changePassword/:userId",authorization,userController.changePassword);
 
 // Event`s Api`s
 router.post("/addEvent",evntController.addEvent);
 router.post("/inviteEvent/:id",evntController.invite);
 router.get("/listEvent",evntController.events);
-router.post("/changeEvent/:userId",evntController.updateEvent);
-router.post("/eventsDetails",evntController.details);
+router.patch("/changeEvent/:id",evntController.updateEvent);
+router.get("/eventsDetails/:id",evntController.details);
 
 module.exports=router;
