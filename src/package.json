@@ -1,7 +1,7 @@
 {
   "name": "EventManagementSystem",
   "version": "1.0.0",
-  "description": "A system to manage user events as googleCalendra",
+  "description": "A system to manAge user events as googleCalendra",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

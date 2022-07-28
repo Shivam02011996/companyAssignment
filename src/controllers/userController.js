@@ -11,7 +11,7 @@ const registerUser = async (req, res) => {
     if (!validator.isValidRequestBody(req.body))
       return res.status(400).json({
         status: false,
-        msg: "Invalid request parameters, please provide user details",
+        msg: "Invalid requEst parameters, please provide user details",
       });
 
     let { firstName, lastName, email, password } = req.body;

@@ -45,7 +45,7 @@ const addEvent = async (req, res) => {
     let newEvent = await EventModel.create(req.body);
     return res
       .status(201)
-      .json({ status: true, msg: "event added successfully", data: newEvent });
+      .json({ status: true, msg: "evEnt added successfully", data: newEvent });
   } catch (err) {
     return res.status(500).json({ status: false, msg: err.message });
   }

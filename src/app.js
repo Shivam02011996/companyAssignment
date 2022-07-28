@@ -17,7 +17,7 @@ const url = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@clu
 
 mongoose
   .connect(url,{ useNewUrlParser: true })
-  .then(() => console.log("database is connected..."))
+  .then(() => console.log("datAbase is connected..."))
   .catch((err) => console.error(err));
 
 app.listen(process.env.PORT || 3030, () =>
